@@ -48,4 +48,32 @@ Below is shown an example where the user sebh24 logged in from 192.168.10.101 an
 sebh24 pts/0 192.168.10.101 Sat Mar 10 10:34:21 - 10:35 (00:01)
 ```
 
-As told before, `wtmp` is a binary file so we use different tools suhc as `last` or `utmpdump`, in this case we have a tool called `utmp.py` to aid the investigation 
+As told before, `wtmp` is a binary file so we use different tools suhc as `last` or `utmpdump`, in this case we have a tool called `utmp.py` to aid the investigation.
+
+# Questions
+---
+1. Analyze the auth.log. What is the IP address used by the attacker to carry out a brute force attack?
+
+	To identify potential brute force attacks, we look for multiple occurrences of log entries containing `"Invalid user"` or `"Failed password"` within a short time frame. These messages typically indicate repeated unauthorized login attempts.
+
+	To extract this information from the log file, I used the `cat` and `grep` commands as follows. 
+	
+	```sh
+	cat auth.log | grep -iE "invalid|failed"
+	```
+
+	The key component of this command is `grep`, used with the following options:
+	
+	- `-i`: Makes the search case-insensitive, so it matches both uppercase and lowercase variations.
+    
+	- `-E`: Enables extended regular expressions, allowing us to search for multiple patterns in a single command. In this case, it matches lines containing either `"invalid"` or `"failed"`.
+    
+	This command filters the contents of the `auth.log` file and displays only the lines relevant to failed authentication attempts. Below are the results retrieved from running this command.
+
+	![[Pasted image 20250604191327.png]]
+
+	According to the results above we can see a numerous attempts from a single IP address, `65.2.161.68`, indicating a brute force attack. 
+	
+	**ANSWER: 65.2.161.68**
+
+2. The bruteforce attempts were successful and attacker gained access to an account on the server. What is the username of the account?
