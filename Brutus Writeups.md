@@ -70,7 +70,7 @@ As told before, `wtmp` is a binary file so we use different tools suhc as `last`
     
 	This command filters the contents of the `auth.log` file and displays only the lines relevant to failed authentication attempts. Below are the results retrieved from running this command.
 
-	![[Auth failed filtered information.png]]
+	![[Auth failed filtered information.png]](/Auth failed filtered information.png)
 
 	According to the results above we can see a numerous attempts from a single IP address, `65.2.161.68`, indicating a brute force attack. 
 	
