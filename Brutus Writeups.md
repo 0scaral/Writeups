@@ -86,11 +86,11 @@ As told before, `wtmp` is a binary file so we use different tools suhc as `last`
 
 	This command displays only the lines with the password accepted in the authentication process as shows below.
 	
-	![[Auth Accepted - user.png]]
+	![image](https://github.com/user-attachments/assets/26525e8d-ede7-4466-a4f3-a3cfabff136c)
 	
 	As we can see the first time the attack was successful the attacker **access as `root`** . Indicating that the **most privilege user of the system was compromised**, this is critical for any system. Also we see another connection with other user (cyberjunkie) 
 
-	![[Auth accepted and disconnected information.png]]
+	![image](https://github.com/user-attachments/assets/b33bf8df-6861-4e3b-930f-c23440e06080)
 
 	It is also shows that the **session was closed at the same time it was accepted**, which further **indicated a brute forcing tool being used**. A brute forcing tool is a program or script designed to systematically attempt all possible combination of characters to find a correct solution, typically used in password cracking or cryptography context.
 	
@@ -105,7 +105,7 @@ As told before, `wtmp` is a binary file so we use different tools suhc as `last`
 
 	Initially the attacker used automated tools for the brute force attack, but after obtain the correct credentials, they authenticated manually and enter the system at 06:32:44 as we can see below.
 	
-	![[Auth manually attacker login.png]]
+	![image](https://github.com/user-attachments/assets/9d49063b-8239-433e-8579-a35142406528)
 
 	Although we know the connection happened at that time for this specific analysis we will use wtmp artifact as this will provide us the time when the attacker had an interactive terminal connected. So first we used the tool `utmp.py` to created a readable file as shown below
 
@@ -115,7 +115,7 @@ As told before, `wtmp` is a binary file so we use different tools suhc as `last`
 
 	With the readable file we can filter the information using `grep` with the IP of the attacker `65.2.161.68` in order to obtain the timestamp when the attacker established a terminal session. 
 	
-	![[wtmp terminal session timestamp.png]]
+	![image](https://github.com/user-attachments/assets/6a56a5d3-036f-4408-8997-e261a1cf62c0)
 
 	We see that the attacker established a terminal session as root at 06:32:45 on 2024-03-06.
 
@@ -125,7 +125,7 @@ As told before, `wtmp` is a binary file so we use different tools suhc as `last`
 
 	Each SSH login session is assigned a unique session number for tracking  purposes, we can find it searching the keywords `New session`, and we know which one it is by the user used and the timestamp as displays below.
 	 
-	![[Session number information.png]]
+	![image](https://github.com/user-attachments/assets/87e1daf2-da11-481c-8a18-abc7d6734a6c)
 
 	**ANSWER: `37`**
 
