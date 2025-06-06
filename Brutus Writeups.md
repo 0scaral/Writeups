@@ -74,6 +74,59 @@ As told before, `wtmp` is a binary file so we use different tools suhc as `last`
 
 	According to the results above we can see a numerous attempts from a single IP address, `65.2.161.68`, indicating a brute force attack. 
 	
-	**ANSWER: 65.2.161.68**
+	**ANSWER: `65.2.161.68`**
 
 2. The bruteforce attempts were successful and attacker gained access to an account on the server. What is the username of the account?
+
+	We have confirmed the IP address performing a bruteforce attack, however we need to know if the threat actor was successful, so we search for the keyword "Accepted password" using the same command combination.
+
+	```sh
+	cat auth.log | grep -i "accepted"
+	```
+
+	This command displays only the lines with the password accepted in the authentication process as shows below.
+	
+	![[Auth Accepted - user.png]]
+	
+	As we can see the first time the attack was successful the attacker **access as `root`** . Indicating that the **most privilege user of the system was compromised**, this is critical for any system. Also we see another connection with other user (cyberjunkie) 
+
+	![[Auth accepted and disconnected information.png]]
+
+	It is also shows that the **session was closed at the same time it was accepted**, which further **indicated a brute forcing tool being used**. A brute forcing tool is a program or script designed to systematically attempt all possible combination of characters to find a correct solution, typically used in password cracking or cryptography context.
+	
+	Some examples of brute forcing tools for authentication are:
+	- Hydra
+	- Medusa
+	- Brutus
+
+	**ANSWER: `root`**
+
+3. Identify the UTC timestamp when the attacker logged in manually to the server and established a terminal session to carry out their objectives. The login time will be different than the authentication time, and can be found in the wtmp artifact.
+
+	Initially the attacker used automated tools for the brute force attack, but after obtain the correct credentials, they authenticated manually and enter the system at 06:32:44 as we can see below.
+	
+	![[Auth manually attacker login.png]]
+
+	Although we know the connection happened at that time for this specific analysis we will use wtmp artifact as this will provide us the time when the attacker had an interactive terminal connected. So first we used the tool `utmp.py` to created a readable file as shown below
+
+	```sh
+	python3 utmp.py -o wtmp.out wtmp
+	```
+
+	With the readable file we can filter the information using `grep` with the IP of the attacker `65.2.161.68` in order to obtain the timestamp when the attacker established a terminal session. 
+	
+	![[wtmp terminal session timestamp.png]]
+
+	We see that the attacker established a terminal session as root at 06:32:45 on 2024-03-06.
+
+	**ANSWER: `2024-03-06 06:32:45`**
+
+4. SSH Login session are tracked and assigned a session number upon logon. What is attacker's session number for the user account from Question 2?
+
+	Each SSH login session is assigned a unique session number for tracking  purposes, we can find it searching the keywords `New session`, and we know which one it is by the user used and the timestamp as displays below.
+	 
+	![[Session number information.png]]
+
+	**ANSWER: `37`**
+
+5. The attacker 
