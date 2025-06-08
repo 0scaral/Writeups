@@ -139,7 +139,7 @@ As told before, `wtmp` is a binary file so we use different tools suhc as `last`
 	- usermod -> Indicates the modification of the user permissions or groups
 	- groupadd -> Indicates the creation of a new group.
 
-	![[Creation of new user.png]]
+	![image](https://github.com/user-attachments/assets/a7e52a32-d9f0-4a94-ab90-fe0a092b2d22)
 
 	The information displayed shows the creation of a new group and user named `cyberjunkie`, who subsequently added to the `sudo` group for elevated privileges. In this way the user created by the attacker can execute commands with elevated privileges by prefixing the command with `sudo`. 
 
@@ -151,11 +151,11 @@ As told before, `wtmp` is a binary file so we use different tools suhc as `last`
 
 	The MITRE ATT&CK is a **framework that categorizes various tactics and techniques used by attackers**. In this case we understand that the new account created as a method of achieving persistence, so using the *Enterprise Matrix* and locate under "Persistence" the "Create Account" technique, detailed below as T1136
 
-	![[Enterprise Matrix - Create Account.png]]
+	![image](https://github.com/user-attachments/assets/539bfb56-604d-4143-9b11-83f8e80c2d5a)
 
 	Let's go little deeper, looking at the sub-techniques. In this case the account was a local account on the compromised host therefore the sub-technique is T1136.001 as shows below.
 
-	![[Create Account - Subtechniques.png]]
+	![image](https://github.com/user-attachments/assets/a4f2fc2a-337f-48c1-966d-62f1b7f71cc3)
 
 	**ANSWER: `T1136.001`**
 
@@ -163,7 +163,7 @@ As told before, `wtmp` is a binary file so we use different tools suhc as `last`
 
 	In question 4 we found the **session ID was 37**. With this information we can search when the session 37 was closed, in this case at 06:37:24, as we can see in the following image.
 
-	![[Time - Session 37 closed.png]]
+	![image](https://github.com/user-attachments/assets/63247ce8-238d-48ce-aa0c-6f47ad81fe17)
 
 	**ANSWER: `2024-03-06 06:37:24`**
 
@@ -171,7 +171,7 @@ As told before, `wtmp` is a binary file so we use different tools suhc as `last`
 
 	Even though `auth.log` isn't primarily used to track command execution, commands run with `sudo` are logged since they require authentication. In the filter information we see two execution with sudo.
 
-	![[Sudo execution commands.png]]
+	![image](https://github.com/user-attachments/assets/8e5a3aae-d8e0-4bce-aa10-e8677a64a4ff)
 
 	The first used of `sudo` was to view the content of the file `shadow` which **contains the hashes of the passwords of the users of the system**, so the system passwords could have been compromised. The full command was: `sudo cat /etc/shadow`
 	
