@@ -15,7 +15,9 @@ We have provided two `.evtx` files to examine the incident logs. In these files,
 
 Therefore, we can use the **Find** tool to search for this in the event log. As shown in the images below, the `Win32_ComputerSystem` class is used to obtain model and manufacturer details.
 
-==IMAGE==
+![image](https://github.com/user-attachments/assets/712e97ed-abe1-4fcd-abde-3ce994aea90e)
+
+![image](https://github.com/user-attachments/assets/edbf252b-83d4-4caf-85dc-cd1d04336373)
 
 **ANSWER `Win32_ComputerSystem`**
 
