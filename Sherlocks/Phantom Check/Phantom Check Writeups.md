@@ -26,7 +26,7 @@ of the machine?**
 
 Following the same approach, we searched for `Get-WmiObject` and found the query `SELECT * FROM MSAcpi_ThermalZoneTemperature`, which is used to retrieve the current temperature value, as shown in the image below.
 
-==IMAGE==
+![image](https://github.com/user-attachments/assets/dc4e7550-320f-4a32-9f0a-d44e2f8d4485)
 
 **ANSWER: `SELECT * FROM MSAcpi_ThermalZoneTemperature`**
 
